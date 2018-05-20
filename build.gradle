@@ -23,26 +23,42 @@ repositories {
 	mavenCentral()
 }
 
-sourceSets {
-
-	main {
-		java {
-			srcDir 'src/main/java'
-		}
-		resources {
-			srcDir 'src/main/resources'
-		}
-	}
-
-	test {
-		java {
-			srcDir 'src/test/contract/consumer/java'
-		}
-	}
-}
-
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('au.com.dius:pact-jvm-consumer-junit_2.12:3.5.14')
+	testCompile('au.com.dius:pact-jvm-provider-junit_2.12:3.5.10')
+	testCompile('au.com.dius:pact-jvm-provider-spring_2.12:3.5.10')
+}
+
+sourceSets {
+	consumerContract {
+		java.srcDir 'src/test/contract/consumer/java'
+		compileClasspath += main.output + test.output
+		runtimeClasspath += main.output + test.output
+	}
+
+	providerContract {
+		java.srcDir 'src/test/contract/provider/java'
+		compileClasspath += main.output + test.output
+		runtimeClasspath += main.output + test.output
+	}
+}
+
+configurations {
+	consumerContractCompile.extendsFrom testCompile
+	consumerContractCompile.extendsFrom testRuntime
+
+	providerContractCompile.extendsFrom testCompile
+	providerContractCompile.extendsFrom testRuntime
+}
+
+task consumerContractTests(type: Test, description: 'Runs the consumer contract tests.', group: 'Verification') {
+	testClassesDir = sourceSets.consumerContract.output.classesDir
+	classpath = sourceSets.consumerContract.runtimeClasspath
+}
+
+task providerContractTests(type: Test, description: 'Runs the provider contract tests.', group: 'Verification') {
+	testClassesDir = sourceSets.providerContract.output.classesDir
+	classpath = sourceSets.providerContract.runtimeClasspath
 }

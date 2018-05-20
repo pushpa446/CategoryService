@@ -1,0 +1,46 @@
+{
+  "consumer": {
+    "name": "dummy-consumer"
+  },
+  "provider": {
+    "name": "category-service"
+  },
+  "interactions": [
+    {
+      "description": "a request for category data",
+      "providerState": "HasCategoryDetails",
+      "request": {
+        "method": "GET",
+        "path": "/category/cat1234"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "cat1234",
+          "products" : [
+            {
+              "id": "prod1",
+              "name": "Pen",
+              "price": 240.0
+            },
+            {
+              "id": "prod2",
+              "name": "Pencil",
+              "price": 620.0
+            }
+          ]
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
