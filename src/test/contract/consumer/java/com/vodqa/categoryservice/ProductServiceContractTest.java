@@ -5,6 +5,7 @@ import au.com.dius.pact.consumer.PactProviderRuleMk2;
 import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.DslPart;
 import au.com.dius.pact.consumer.dsl.PactDslJsonArray;
+import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.model.RequestResponsePact;
 import com.vodqa.categoryservice.models.Product;
@@ -24,7 +25,7 @@ public class ProductServiceContractTest {
     public PactProviderRuleMk2 mockProvider = new PactProviderRuleMk2("product-service", "localhost", 8080, this);
 
     @Pact(provider="product-service", consumer="category-service")
-    public RequestResponsePact createPact(PactDslWithProvider builder) {
+    public RequestResponsePact createPactForProductList(PactDslWithProvider builder) {
         DslPart body = new PactDslJsonArray()
                 .object()
                     .stringValue("id", "prod1234")
@@ -49,6 +50,21 @@ public class ProductServiceContractTest {
                 .toPact();
     }
 
+    @Pact(provider="product-service", consumer="category-service")
+    public RequestResponsePact createPactForProduct(PactDslWithProvider builder) {
+        DslPart body = new PactDslJsonBody();
+
+        return builder
+                .given("add your state name")
+                .uponReceiving("A request is made with product id")
+                .path("add your path")
+                .method("GET")
+                .willRespondWith()
+                .status(200)
+                .body(body)
+                .toPact();
+    }
+
     @Test
     @PactVerification("product-service")
     public void shouldReceiveValidProductListResponse() throws URISyntaxException, IOException {
@@ -65,4 +81,9 @@ public class ProductServiceContractTest {
         assertEquals(180.0,product2.getPrice(), 0);
     }
 
+    @Test
+    @PactVerification("product-service")
+    public void shouldReceiveValidProductDetails() {
+        //add your code here
+    }
 }

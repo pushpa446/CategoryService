@@ -22,8 +22,8 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 @RunWith(PactRunner.class)
-@Provider("category-service")
-@Consumer("dummy-consumer")
+@Provider("enter provider name")
+@Consumer("enter consumer name")
 @PactFolder(value = "./src/test/contract/provider/resources/pacts")
 public class PenguinContractTest {
 
@@ -40,12 +40,8 @@ public class PenguinContractTest {
         target.setControllers(categoryController);
     }
 
-    @State("HasCategoryDetails")
+    @State("add your state name")
     public void shouldReturnListOfProductDetails(){
-        List<Product> products = new ArrayList<>();
-        products.add(new Product("123", "Pen", 234));
-        products.add(new Product("456", "Pencil", 876));
-        Category category = new Category("cat1234", products);
-        when(categoryService.getProductsById("cat1234")).thenReturn(category);
+        //add code validate consumer contract
     }
 }
