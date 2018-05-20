@@ -52,15 +52,12 @@ public class ProductServiceContractTest {
 
     @Pact(provider="product-service", consumer="category-service")
     public RequestResponsePact createPactForProduct(PactDslWithProvider builder) {
-        DslPart body = new PactDslJsonBody()
-                .stringValue("id", "prod1234")
-                .stringType("name", "Table")
-                .decimalType("price", 240.0);
+        DslPart body = new PactDslJsonBody();
 
         return builder
-                .given("HasProductDetails")
+                .given("add a state name")
                 .uponReceiving("A request is made with product id")
-                .path("/products/prod1234")
+                .path("add your path")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
@@ -87,10 +84,6 @@ public class ProductServiceContractTest {
     @Test
     @PactVerification(value="product-service", fragment = "createPactForProduct")
     public void shouldReceiveValidProductDetails() {
-        ProductServiceGateway gateway = new ProductServiceGateway();
-        Product product = gateway.getProduct("prod1234");
-        assertEquals("prod1234",product.getId());
-        assertEquals("Table",product.getName());
-        assertEquals(240.0,product.getPrice(), 0);
+        //add your code here
     }
 }
