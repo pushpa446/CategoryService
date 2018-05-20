@@ -52,12 +52,15 @@ public class ProductServiceContractTest {
 
     @Pact(provider="product-service", consumer="category-service")
     public RequestResponsePact createPactForProduct(PactDslWithProvider builder) {
-        DslPart body = new PactDslJsonBody();
+        DslPart body = new PactDslJsonBody()
+                .stringValue("id", "prod1234")
+                .stringType("name", "Table")
+                .decimalType("price", 240.0);
 
         return builder
-                .given("add your state name")
+                .given("HasProductDetails")
                 .uponReceiving("A request is made with product id")
-                .path("add your path")
+                .path("/products/prod1234")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
@@ -66,7 +69,7 @@ public class ProductServiceContractTest {
     }
 
     @Test
-    @PactVerification("product-service")
+    @PactVerification(value = "product-service", fragment = "createPactForProductList")
     public void shouldReceiveValidProductListResponse() throws URISyntaxException, IOException {
         ProductServiceGateway gateway = new ProductServiceGateway();
         List<Product> products = gateway.getProducts(Arrays.asList("prod1234","prod4567"));
@@ -82,8 +85,12 @@ public class ProductServiceContractTest {
     }
 
     @Test
-    @PactVerification("product-service")
+    @PactVerification(value="product-service", fragment = "createPactForProduct")
     public void shouldReceiveValidProductDetails() {
-        //add your code here
+        ProductServiceGateway gateway = new ProductServiceGateway();
+        Product product = gateway.getProduct("prod1234");
+        assertEquals("prod1234",product.getId());
+        assertEquals("Table",product.getName());
+        assertEquals(240.0,product.getPrice(), 0);
     }
 }

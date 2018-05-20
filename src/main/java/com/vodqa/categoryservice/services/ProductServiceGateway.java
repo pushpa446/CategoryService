@@ -29,4 +29,14 @@ public class ProductServiceGateway {
                 });
         return response.getBody();
     }
+
+    public Product getProduct(String productId){
+        final String uri = "http://localhost:8080/products/"+productId;
+        ResponseEntity<Product> response = restTemplate.exchange(
+                uri,
+                HttpMethod.GET, HttpEntity.EMPTY,
+                new ParameterizedTypeReference<Product>() {
+                });
+        return response.getBody();
+    }
 }
