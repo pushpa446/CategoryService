@@ -21,7 +21,7 @@ public class CategoryService {
 
     public Category getProductsById(String categoryId) {
         //Assume we are getting list of product ids under a category from a CategoryRepository
-        List<String> productIds = new ArrayList<>(Arrays.asList("1234", "4567", "891"));
+        List<String> productIds = new ArrayList<>(Arrays.asList("123", "124", "125"));
 
         List<Product> products = productServiceGateway.getProducts(productIds);
         return new Category(categoryId, products);
